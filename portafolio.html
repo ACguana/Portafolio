@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Portafolio — Andrés Camilo Guana Cadena</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Archivo:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0d0d0d;
+      --surface: #141414;
+      --border: #2a2a2a;
+      --text: #e8e2d9;
+      --muted: #6b6560;
+      --accent: #c9a96e;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Archivo', sans-serif;
+      font-weight: 300;
+      line-height: 1.6;
+      cursor: crosshair;
+    }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.4rem 3rem;
+      border-bottom: 1px solid var(--border);
+      background: rgba(13,13,13,.85);
+      backdrop-filter: blur(12px);
+    }
+    .nav-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem; letter-spacing: .08em;
+      color: var(--text); text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-size: .75rem; letter-spacing: .15em;
+      text-transform: uppercase; color: var(--muted);
+      text-decoration: none; transition: color .25s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    #hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding-top: 5rem;
+    }
+    .hero-left {
+      display: flex; flex-direction: column;
+      justify-content: flex-end;
+      padding: 5rem 3rem;
+    }
+    .hero-eyebrow {
+      font-size: .7rem; letter-spacing: .2em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 1.5rem;
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(4rem, 7vw, 7rem);
+      font-weight: 300; line-height: .95;
+      margin-bottom: 2rem;
+    }
+    .hero-title em { font-style: italic; color: var(--accent); }
+    .hero-bio {
+      max-width: 38ch; font-size: .9rem;
+      color: var(--muted); line-height: 1.8;
+      border-left: 1px solid var(--accent);
+      padding-left: 1.2rem;
+    }
+    .hero-right { position: relative; overflow: hidden; }
+    .hero-img {
+      width: 100%; height: 100%;
+      object-fit: cover; filter: grayscale(20%);
+      transition: filter .5s;
+    }
+    .hero-img:hover { filter: grayscale(0%); }
+    .hero-img-placeholder {
+      width: 100%; height: 100%; min-height: 70vh;
+      background: var(--surface);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 1rem; border-left: 1px solid var(--border);
+    }
+    .hero-img-placeholder span {
+      font-size: .7rem; letter-spacing: .2em;
+      text-transform: uppercase; color: var(--muted);
+    }
+
+    section { padding: 6rem 3rem; }
+    .section-label {
+      font-size: .65rem; letter-spacing: .25em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 3rem;
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .section-label::after {
+      content: ''; flex: 1; max-width: 60px;
+      height: 1px; background: var(--accent);
+    }
+
+    #proyecto { border-top: 1px solid var(--border); }
+    .proyecto-header {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; margin-bottom: 5rem; align-items: start;
+    }
+    .proyecto-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.5rem, 4vw, 4.5rem);
+      font-weight: 300; line-height: 1.05;
+    }
+    .statement-box {
+      padding: 2.5rem; border: 1px solid var(--border);
+      background: var(--surface); position: relative;
+    }
+    .statement-box::before {
+      content: '"';
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 6rem; line-height: 0;
+      position: absolute; top: 3rem; left: 1.5rem;
+      color: var(--accent); opacity: .3;
+    }
+    .statement-label {
+      font-size: .65rem; letter-spacing: .2em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 1.2rem;
+    }
+    .statement-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem; font-style: italic;
+      line-height: 1.8; color: #c4bdb5;
+    }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+    .photo-cell {
+      position: relative; overflow: hidden;
+      background: var(--surface); aspect-ratio: 3/4;
+    }
+    .photo-cell.wide { aspect-ratio: 4/3; }
+    .photo-cell.square { aspect-ratio: 1/1; }
+    .photo-cell.tall { grid-row: span 2; aspect-ratio: unset; }
+    .photo-cell img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform .6s ease, filter .4s;
+      filter: grayscale(15%);
+    }
+    .photo-cell:hover img { transform: scale(1.04); filter: grayscale(0%); }
+    .photo-number {
+      position: absolute; bottom: .8rem; left: .8rem;
+      font-size: .6rem; letter-spacing: .2em;
+      color: rgba(255,255,255,.4);
+    }
+    .photo-placeholder {
+      width: 100%; height: 100%; min-height: 260px;
+      background: var(--surface);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: .6rem; border: 1px solid var(--border);
+    }
+    .photo-placeholder p {
+      font-size: .65rem; letter-spacing: .15em;
+      text-transform: uppercase; color: var(--border);
+    }
+
+    #portafolio { border-top: 1px solid var(--border); }
+    .portfolio-intro {
+      display: grid; grid-template-columns: 1fr 2fr;
+      gap: 4rem; margin-bottom: 5rem; align-items: center;
+    }
+    .portfolio-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 5vw, 5rem);
+      font-weight: 300; line-height: 1;
+    }
+    .portfolio-desc { color: var(--muted); font-size: .9rem; line-height: 1.9; }
+
+    .serie { margin-bottom: 5rem; }
+    .serie-header {
+      display: flex; justify-content: space-between;
+      align-items: baseline; margin-bottom: 1.5rem;
+      padding-bottom: 1rem; border-bottom: 1px solid var(--border);
+    }
+    .serie-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem; font-weight: 300;
+    }
+    .serie-meta {
+      font-size: .7rem; letter-spacing: .15em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .serie-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+    }
+
+    #sobre-mi {
+      border-top: 1px solid var(--border);
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+    }
+    .author-photo-wrap { position: relative; }
+    .author-photo-wrap img,
+    .author-photo-placeholder {
+      width: 100%; aspect-ratio: 3/4; object-fit: cover;
+    }
+    .author-photo-placeholder {
+      background: var(--surface);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: .8rem; border: 1px solid var(--border);
+    }
+    .author-photo-wrap::before {
+      content: ''; position: absolute;
+      top: 1rem; left: 1rem; right: -1rem; bottom: -1rem;
+      border: 1px solid var(--accent); z-index: -1;
+    }
+    .author-info { display: flex; flex-direction: column; justify-content: center; }
+    .author-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.5rem; font-weight: 300;
+      line-height: 1; margin-bottom: 2rem;
+    }
+    .author-bio-text {
+      font-size: .9rem; color: #b0aa9f;
+      line-height: 1.9; margin-bottom: 2rem;
+    }
+    .author-tags { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; }
+    .tag {
+      font-size: .65rem; letter-spacing: .15em;
+      text-transform: uppercase; padding: .35rem .8rem;
+      border: 1px solid var(--border); color: var(--muted);
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 3rem;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-name { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: var(--muted); }
+    .footer-copy { font-size: .7rem; letter-spacing: .1em; color: var(--border); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero-eyebrow { animation: fadeUp .8s ease both; }
+    .hero-title   { animation: fadeUp .8s .15s ease both; }
+    .hero-bio     { animation: fadeUp .8s .3s ease both; }
+
+    @media (max-width: 768px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .nav-links { display: none; }
+      #hero { grid-template-columns: 1fr; }
+      .hero-right { min-height: 50vw; }
+      .proyecto-header, .portfolio-intro, #sobre-mi { grid-template-columns: 1fr; gap: 2rem; }
+      .photo-grid, .photo-grid.has-feature { grid-template-columns: repeat(2, 1fr); }
+      .serie-grid { grid-template-columns: repeat(2, 1fr); }
+      section { padding: 4rem 1.5rem; }
+      footer { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-name" href="#hero">Andrés Guana</a>
+  <ul class="nav-links">
+    <li><a href="#proyecto">Proyecto</a></li>
+    <li><a href="#portafolio">Portafolio</a></li>
+    <li><a href="#sobre-mi">Sobre mí</a></li>
+  </ul>
+</nav>
+
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow">Portafolio fotográfico · 2025</p>
+    <h1 class="hero-title">
+      Andrés<br><em>Guana</em>
+    </h1>
+    <p class="hero-bio">
+      Paisajes y lugares que la universidad me enseñó a ver.
+      Fotografío lo que otros pasan por alto en el camino de cada día.
+    </p>
+  </div>
+  <div class="hero-right">
+    
+      
+      <img class="hero-img" src="Portada.jpeg" alt="Portada" />
+   
+    <div class="hero-img-placeholder">
+      <span style="font-size:3rem;opacity:.1">◻</span>
+      <span>Tu mejor foto aquí</span>
+      <span style="font-size:.6rem;color:#333">src="fotos/portada.jpg"</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- PROYECTO AUTORAL -->
+<section id="proyecto">
+  <p class="section-label">Proyecto autoral</p>
+
+  <div class="proyecto-header">
+    <h2 class="proyecto-title">
+      Rutas que<br><em>la U</em><br>me dejó
+    </h2>
+
+    <div class="statement-box">
+      <p class="statement-label">Statement</p>
+      <p class="statement-text">
+        Hay lugares que solo existen para quienes los recorren a diario.
+        Entradas, corredores, fachadas, vistas desde ventanas y terrazas
+        que la mayoría cruza sin mirar. Este proyecto nació de eso:
+        de querer detenerme en los rincones y paisajes que la Universidad
+        Distrital me fue revelando con el tiempo.<br><br>
+
+        No busqué escenarios espectaculares. Busqué lo que ya estaba ahí,
+        esperando que alguien le dedicara una foto. Las vistas que uno
+        aprende a querer porque las vive, no porque las buscó.<br><br>
+
+        Fotografiar estos lugares fue una forma de agradecerles
+        lo que me dieron sin que yo lo pidiera.
+      </p>
+    </div>
+  </div>
+
+  <!-- GRILLA 12 FOTOS DEL PROYECTO -->
+  <div class="photo-grid">
+
+    <div class="photo-cell tall">
+      <img src="WhatsApp Image 2026-05-27 at 9.07.14 PM.jpeg" alt="Vista 1" /> 
+      <div class="photo-placeholder"><span style="font-size:2rem;opacity:.1">◻</span><p>foto 01</p></div>
+      <span class="photo-number">01</span>
+    </div>
+
+    <div class="photo-cell">
+       <img src="image.png" alt="Vista 2" /> 
+      <div class="photo-placeholder"><span style="font-size:2rem;opacity:.1">◻</span><p>foto 02</p></div>
+      <span class="photo-number">02</span>
+    </div>
+
+    <div class="photo-cell">
+     <img src="image (1).png" alt="Vista 3" /> 
+      <div class="photo-placeholder"><span style="font-size:2rem;opacity:.1">◻</span><p>foto 03</p></div>
+      <span class="photo-number">03</span>
+    </div>
+
+    <div class="photo-cell">
+       <img src="image (2).png" alt="Vista 4" /> 
+      <div class="photo-placeholder"><span style="font-size:2rem;opacity:.1">◻</span><p>foto 04</p></div>
+      <span class="photo-number">04</span>
+    </div>
+
+    <div class="photo-cell wide">
+       <image src="image (3).png" alt="Vista 5" /> 
+      <div class="photo-placeholder"><span style="font-size:2rem;opacity:.1">◻</span><p>foto 05</p></div>
+      <span class="photo-number">05</span>
+    </div>
+
+    <div class="photo-cell">
+      <img src="image (4).png" alt="Vista 6" /> 
+      <div class="photo-placeholder"><span style="font-size:2rem;opacity:.1">◻</span><p>foto 06</p></div>
+      <span class="photo-number">06</span>
+    </div>
+
+    <div class="photo-cell">
+       <img src="image (5).png" alt="Vista 7" /> 
+      <div class="photo-placeholder"><span style="font-size:2rem;opacity:.1">◻</span><p>foto 07</p></div>
+      <span class="photo-number">07</span>
+    </div>
+
+    <div class="photo-cell">
+       <img src="image (6).png" alt="Vista 8" /> 
+      <div class="photo-placeholder"><span style="font-size:2rem;opacity:.1">◻</span><p>foto 08</p></div>
+      <span class="photo-number">08</span>
+    </div>
+
+   
+
+  </div>
+</section>
+
+
+<!-- PORTAFOLIO -->
+<section id="portafolio">
+  <p class="section-label">Portafolio</p>
+
+  <div class="portfolio-intro">
+    <h2 class="portfolio-title">Trabajo<br>previo</h2>
+    <p class="portfolio-desc">
+      Selección de ejercicios realizados durante el primer y segundo corte del semestre.
+      Cada serie representa una mirada distinta, un encuadre diferente de aprender a ver.
+    </p>
+  </div>
+
+<img src="image (7).png" alt="Foto 1" />
+<img src="image (8).png" alt="Foto 2" />
+<img src="image (9).png" alt="Foto 3" />
+<img src="image (10).png" alt="Foto 4" />
+
+<!-- SEGUNDO CORTE -->
+  <div class="serie">
+    <div class="serie-header">
+      <h3 class="serie-name">La Esencia de la Elegancia</h3>
+      <span class="serie-meta">Segundo corte · 2025</span>
+    </div>
+    <div class="serie-grid">
+      <div class="photo-cell square">
+        <img src="image (11).png" alt="Foto 1" />
+      </div>
+      <div class="photo-cell square">
+        <img src="image (12).png" alt="Foto 2" />
+      </div>
+      <div class="photo-cell square">
+        <img src="image (13).png" alt="Foto 3" />
+      </div>
+      <div class="photo-cell square">
+        <img src="image (14).png" alt="Foto 4" />
+      </div>
+    </div>
+  </div>
+
+</section>
+
+
+
+<!-- SOBRE MÍ -->
+<section id="sobre-mi">
+
+  <div class="author-photo-wrap">
+    <img src="WhatsApp Image 2026-05-27 at 9.18.23 PM.jpeg" alt="Andrés Camilo Guana Cadena" />
+  </div>
+
+  <div class="author-info">
+    <p class="section-label">Sobre mí</p>
+
+    <h2 class="author-name">
+      Andrés Camilo<br><em style="font-style:italic;color:var(--accent)">Guana Cadena</em>
+    </h2>
+
+    <p class="author-bio-text">
+      Nací en Bogotá, Colombia. Estudio Ingeniería Electrónica en la
+      Universidad Distrital Francisco José de Caldas, donde también
+      encontré algo que no esperaba: una forma de mirar el mundo
+      a través de la fotografía.<br><br>
+
+      Empecé a fotografiar los lugares que recorro a diario —
+      corredores, terrazas, vistas desde ventanas — y me di cuenta
+      de que la cámara me obligaba a prestarles atención de verdad.
+      Me interesan los paisajes, la luz natural y los encuadres
+      que cuentan algo sin necesitar palabras.<br><br>
+
+      Por fuera del lente me muevo en una cancha de fútbol o
+      de baloncesto, o con los audífonos puestos dejando que
+      la música dicte el ritmo del día.
+    </p>
+
+    <div class="author-tags">
+      <span class="tag">Paisaje</span>
+      <span class="tag">Fotografía urbana</span>
+      <span class="tag">Bogotá</span>
+      <span class="tag">Ing. Electrónica</span>
+      <span class="tag">U. Distrital</span>
+    </div>
+  </div>
+
+</section>
+
+
+<footer>
+  <span class="footer-name">Andrés Camilo Guana Cadena — Portafolio Fotográfico</span>
+  <span class="footer-copy">© 2025 · Todos los derechos reservados</span>
+</footer>
+
+</body>
+</html>
